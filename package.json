@@ -1,14 +1,15 @@
 {
-  "name": "spacesocket",
+  "name": "@spacelys/sockets",
   "main": "src/index.ts",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "",
-  "private": true,
   "port": 4321,
   "scripts": {
     "test": "jest",
+    "coverage": "npm run test -- --coverage",
     "build": "webpack --config webpack.config.js",
     "dev": "nodemon",
+    "integration": "ts-node ./test/integration/disconnect.ts",
     "examples": "ts-node ./examples/simple/index.ts",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",

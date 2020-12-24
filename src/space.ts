@@ -1,103 +1,132 @@
-import * as WebSocket from "ws";
+import { Client } from './client';
 
 export class Space<Type> {
-    name: string;
-    state: Type;
-    server: any;
-    connected: Array<WebSocket>;
-    parent: any;
-    _messageHandler: any;
-    _joinHandler: (from: any, config?: any) => any;
-    _leaveHandler: (from: any, config?: any) => any;
+	private name: string;
+	private state: Type;
+	private clients: Array<Client>;
 
-    constructor(name: string, server: any, parent: any, initialState: any = {}) {
-        this.name = name;
-        this.state = initialState;
-        this.server = server;
-        this.parent = parent;
-        this.connected = [];
-    }
+	private joinHandler: (from: Client) => void;
+	private leaveHandler: (from: Client) => void;
+	private messageHandler: (from: Client, message: any) => void;
 
-    // public
-    getState() {
-        return this.state;
-    }
+	constructor(state: Type, args: {
+		clients: Array<Client>,
+		name: string,
+	}) {
+		const {clients, name} = args;
+		this.state = state;
+		this.name = name;
+		this.clients = clients;
 
-    // public
-    broadcast(packet: any, exclude?: Array<WebSocket>) {
-        this.connected.forEach((ws: WebSocket) => {
-            const shouldSend = !exclude || !exclude.includes(ws);
+		this.messageHandler = null;
+		this.joinHandler = null;
+		this.leaveHandler = null;
+	}
 
-            if (shouldSend) {
-                ws.send(JSON.stringify(packet));
-            }
-        });
-    }
+	createSpace<T>(name: string, initState: () => T): Space<T> {
+		const space = new Space<T>(initState(), {
+			clients: [],
+			name
+		});
+		return space;
+	}
 
-    // private
-    messageHandler(from: any, packet: any) {
-        if (this._messageHandler) {
-            this._messageHandler(from, packet);
-        }
-    }
+	public addClient(client: Client) {
+		this.clients.push(client);
+		client.addToSpace(this);
 
-    // private
-    joinHandler(from: any, config?: any) { // @todo this is probably not needed, unnecessary abstraction
-        if (this._joinHandler) {
-            this._joinHandler(from, config);
-        }
-    }
+		if (this.joinHandler) {
+			this.joinHandler(client);
+		}
+	}
 
-    // public
-    onMessage(callback : (from: any, packet: any) => any) {
-        this._messageHandler = callback;
-    }
+	public removeClient(client: Client) {
+        const i = this.clients.indexOf(client);
+        if(i !== -1) {
+            this.clients.splice(i, 1);
+			if (this.leaveHandler) {
+				this.leaveHandler(client);
+			}
+		}
+	}
 
-    // public
-    onJoin(callback: (from: any, config?: any) => any) {
-        this._joinHandler = callback;
-    }
+	public instance(name: string): Space<Type> {
+		return this.createSpace(
+			name,
+			() => JSON.parse(JSON.stringify(this.state)),
+		);
+	}
 
-    // public
-    onLeave(callback: (from: any) => any) {
-        this._leaveHandler = callback;
-    }
+	public onJoin(joinHandler: (from: Client) => void) {
+		this.joinHandler = joinHandler;
+	}
 
-    // public
-    broadcasting(callback: () => any, updateInterval: number) {
-        setInterval(callback, updateInterval);
-    }
+	public onLeave(leaveHandler: (from: Client) => void) {
+		this.leaveHandler = leaveHandler;
+	}
 
-    // public
-    addClient(uid: string, config?: any) {
-        this.parent.addClientToSpace(uid, this, config);
-    }
+	public onMessage(messageHandler: (from: Client, message: any) => void) {
+		this.messageHandler = messageHandler;
+	}
 
-    // private
-    addConnection(socket: WebSocket) {
-        this.connected.push(socket);
-    }
+	public handleMessage(from: Client, message: any) {
+		if (this.messageHandler) {
+			this.messageHandler(from, message);
+		}
+	}
+	/**
+	 * Get all clients currently connected to the Space
+	 *
+	 * @returns
+	 * @memberof Space
+	 */
+	public getClients() {
+		return this.clients;
+	}
 
-    // private
-    removeConnection(socket: WebSocket) {
-        const index = this.connected.indexOf(socket);
-        if (index >= 0) {
-            this.connected.splice(index, 1);
-        }
-    }
+	/**
+	 * Get the state associated with the Space
+	 * @returns
+	 * @memberof Space
+	 */
+	public getState() {
+		return this.state;
+	}
 
-    // public @todo should this be private
-    // removeClient(uid: string) {
-    removeClient(from: {uid: string, ws: WebSocket, reply: (packet: any) => void}) {
-        this.parent.removeClientFromSpace(from.uid, this);
-        if (this._leaveHandler) {
-            this._leaveHandler(from);
-        }
-    }
+	/**
+	 * Set the state associated with the Space
+	 * @returns State
+	 * @memberof Space
+	 */
+	public setState(state: Type) {
+		this.state = state;
+		return state;
+	}
 
-    // public
-    instance(name: string) {
-        const instance = new Space(name, this.server, this.parent);
-        return instance;
-    }
+	/**
+	 * Get the name assigned to the space when it was createdf
+	 * @returns {string}
+	 * @memberof Space
+	 */
+	public getName(): string {
+		return this.name;
+	}
+
+	/**
+	 * Send a message to all clients connected to this space excluding any specified in the exclude array
+	 * @param {any} message - Message to send to clients
+	 * @param {Array<Client>} [exclude] - Array of clients to exclude in broadcasting message
+	 * @memberof Space
+	 */
+	public broadcast(message: any, exclude?: Array<Client>) {
+		let clientsToMessage = this.clients;
+		if (exclude) {
+			clientsToMessage = this.clients.filter(client => !exclude.includes(client));
+		}
+
+		const encodedMessage = JSON.stringify(message);
+		clientsToMessage.forEach(client => {
+			client.reply(encodedMessage);			
+		});
+	}
 };
