@@ -10,7 +10,7 @@ Manage your clients and websocket server with the use of Spaces.  These Spaces m
 
 ### Spaces
 
-Spaces are how we should to compartmentalized our websocket server.  Since all messages received are going to the same server, we portion out pieces of our servers to handle certain types of events. You might have a game server where you have a mainSpace, lobbySpace, gameSpace.  The mainSpace could be responsible for general events like private messages.  The lobbySpace would be responsible to group players together before starting the game.  The gameSpace would then be responsible for handling events that happen in the game as to not clutter the lobbySpace with server game logic.
+Spaces are how we compartmentalized our websocket server.  All messages are processed by the same server.  We segment our server via Spaces to handle logical groupings of events. You might have a game server where you have a mainSpace, lobbySpace, gameSpace.  The mainSpace could be responsible for general events like private messages.  The lobbySpace would be responsible to group players together before starting the game.  The gameSpace would then be responsible for handling events that happen in the game as to not clutter the lobbySpace with server game logic.
 
 ---
 
@@ -114,7 +114,7 @@ Connected clients will only receive messages from the Spaces they are connected 
 
 #### UUID
 
-When a player joins the server they will get assigned a unique id.  This id will be the same regardless of what space they are on.  However if the player disconnected from the server and rejoins, a new id will be generated.
+When a client joins the server they will get assigned a unique id.  This id will be the same regardless of what space they are on.  However if the client disconnected from the server and rejoins, a new id will be generated.
 
 ```typescript
 ...
