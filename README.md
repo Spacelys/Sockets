@@ -6,7 +6,7 @@ Manage your clients and websocket server with the use of Spaces.  These Spaces m
 
 ## Installation and Usage
 
-`npm install spacelysocket --save`
+`npm install @spacelys/sockets --save`
 
 ### Spaces
 
@@ -17,7 +17,7 @@ Spaces are how we compartmentalized our websocket server.  All messages are proc
 #### Setting up a Simple Space Server
 
 ```typescript
-import * as Spacely from 'spacelysocket'
+import * as Spacely from '@spacelys/sockets'
 
 const serverSpace = Spacely.listen<any>(4321);
 

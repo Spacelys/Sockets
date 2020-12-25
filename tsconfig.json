@@ -4,18 +4,23 @@
         "outDir": "./dist/",
         "sourceMap": true,
         "noImplicitAny": true,
-        "esModuleInterop": true,
-        "module": "commonjs",
+		"esModuleInterop": true,
+		"declaration": true,
+		"moduleResolution": "node",
+        "module": "es6",
         "target": "es5",
         "jsx": "react",
-        "allowJs": true
+		"allowJs": true,
+		"lib": ["es6", "dom"],
     },
     "include": [
-        "src/**/*"
+		"src/**/*",
+		"test/unit/index.spec.ts",
+		"test/unit/client.spec.ts"
     ],
     "exclude": [
         "node_modules",
         "**/*.spec.ts",
-        "**/*.stories.ts"
+		"**/*.stories.ts"
     ],
 }
