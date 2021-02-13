@@ -86,6 +86,7 @@ export class Space<Type> {
 
 	/**
 	 * Get the state associated with the Space
+	 *
 	 * @returns
 	 * @memberof Space
 	 */
@@ -95,6 +96,7 @@ export class Space<Type> {
 
 	/**
 	 * Set the state associated with the Space
+	 *
 	 * @returns State
 	 * @memberof Space
 	 */
@@ -104,7 +106,8 @@ export class Space<Type> {
 	}
 
 	/**
-	 * Get the name assigned to the space when it was createdf
+	 * Get the name assigned to the space when it was created
+	 *
 	 * @returns {string}
 	 * @memberof Space
 	 */
@@ -114,11 +117,12 @@ export class Space<Type> {
 
 	/**
 	 * Send a message to all clients connected to this space excluding any specified in the exclude array
+	 *
 	 * @param {any} message - Message to send to clients
 	 * @param {Array<Client>} [exclude] - Array of clients to exclude in broadcasting message
 	 * @memberof Space
 	 */
-	public broadcast(message: any, exclude?: Array<Client>) {
+	public broadcast(message: any, exclude?: Array<Client>): void {
 		let clientsToMessage = this.clients;
 		if (exclude) {
 			clientsToMessage = this.clients.filter(client => !exclude.includes(client));
@@ -126,7 +130,7 @@ export class Space<Type> {
 
 		const encodedMessage = JSON.stringify(message);
 		clientsToMessage.forEach(client => {
-			client.reply(encodedMessage);			
+			client.reply(encodedMessage);
 		});
 	}
-};
+}

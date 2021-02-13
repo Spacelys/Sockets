@@ -1,12 +1,12 @@
 import { Client } from './client'
 import { Config } from './config'
 
-export const sendPingRequest = (to: Client) => {
+export const sendPingRequest = (to: Client): void => {
 	to.meta.lastPingTimeStamp = new Date().getTime();
 	to.reply(JSON.stringify({ type: 'PING', payload: { yourId: to.getUID() }}));
 };
 
-export const startDisconnectTimer = (forClient: Client, disconnectTime: number) => {
+export const startDisconnectTimer = (forClient: Client, disconnectTime: number): void => {
 	forClient.meta.disconnectTimer = setTimeout(() => {
 		forClient.disconnect();
 	}, disconnectTime);
@@ -19,7 +19,7 @@ const respondWithLatestPing = (to: Client) => {
 	to.reply(JSON.stringify({ type: 'YOURPING', payload: ping }));
 };
 
-export const handleBuiltInEvents = (config: Config, client: Client) => {
+export const handleBuiltInEvents = (config: Config, client: Client): void => {
 	const clearDisconnectTimer = () => {
 		if (client.meta.disconnectTimer) {
 			clearTimeout(client.meta.disconnectTimer);
@@ -45,7 +45,7 @@ export const handleBuiltInEvents = (config: Config, client: Client) => {
 	const processEvents = (message: any) => {
 		// anytime we get a message from the user we clear the disconnect timer since they are obviously still active
 		clearDisconnectTimer();
-		if (config.calculatePing) {			
+		if (config.calculatePing) {
 			if (message.type === 'PONG') {
 				respondWithLatestPing(client);
 				setTimeout(() => sendPingRequest(client), config.options.pingInterval);

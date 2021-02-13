@@ -4,4 +4,10 @@ steps:
   args: ['install']
 # Test
 - name: 'gcr.io/cloud-builders/npm'
-  args: ['test']
+  args: ['run', 'test']
+# coverage
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'coverage']
+# Linting
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'lint']
