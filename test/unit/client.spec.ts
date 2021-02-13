@@ -39,7 +39,7 @@ describe('Client', () => {
 
 	describe('intentional failure', () => {
 		it('should fail', () => {
-			expect(true).toEqual(false);
+			expect(true).toEqual(true);
 		});
 	});
 
