@@ -9,9 +9,9 @@ export class Space<Type> {
 	private leaveHandler: (from: Client) => void;
 	private messageHandler: (from: Client, message: any) => void;
 
-	constructor(state: Type, args: {
-		clients: Array<Client>,
-		name: string,
+	public constructor(state: Type, args: {
+		clients: Array<Client>;
+		name: string;
 	}) {
 		const {clients, name} = args;
 		this.state = state;
@@ -23,15 +23,15 @@ export class Space<Type> {
 		this.leaveHandler = null;
 	}
 
-	createSpace<T>(name: string, initState: () => T): Space<T> {
+	public createSpace<T>(name: string, initState: () => T): Space<T> {
 		const space = new Space<T>(initState(), {
 			clients: [],
-			name
+			name,
 		});
 		return space;
 	}
 
-	public addClient(client: Client) {
+	public addClient(client: Client): void {
 		this.clients.push(client);
 		client.addToSpace(this);
 
@@ -40,10 +40,10 @@ export class Space<Type> {
 		}
 	}
 
-	public removeClient(client: Client) {
-        const i = this.clients.indexOf(client);
-        if(i !== -1) {
-            this.clients.splice(i, 1);
+	public removeClient(client: Client): void {
+		const i = this.clients.indexOf(client);
+		if (i !== -1) {
+			this.clients.splice(i, 1);
 			if (this.leaveHandler) {
 				this.leaveHandler(client);
 			}
@@ -51,25 +51,25 @@ export class Space<Type> {
 	}
 
 	public instance(name: string): Space<Type> {
-		return this.createSpace(
+		return this.createSpace<Type>(
 			name,
-			() => JSON.parse(JSON.stringify(this.state)),
+			() => (JSON.parse(JSON.stringify(this.state)) as Type),
 		);
 	}
 
-	public onJoin(joinHandler: (from: Client) => void) {
+	public onJoin(joinHandler: (from: Client) => void): void {
 		this.joinHandler = joinHandler;
 	}
 
-	public onLeave(leaveHandler: (from: Client) => void) {
+	public onLeave(leaveHandler: (from: Client) => void): void {
 		this.leaveHandler = leaveHandler;
 	}
 
-	public onMessage(messageHandler: (from: Client, message: any) => void) {
+	public onMessage(messageHandler: (from: Client, message: any) => void): void {
 		this.messageHandler = messageHandler;
 	}
 
-	public handleMessage(from: Client, message: any) {
+	public handleMessage(from: Client, message: Record<string, unknown>): void {
 		if (this.messageHandler) {
 			this.messageHandler(from, message);
 		}
@@ -80,7 +80,7 @@ export class Space<Type> {
 	 * @returns
 	 * @memberof Space
 	 */
-	public getClients() {
+	public getClients(): Array<Client> {
 		return this.clients;
 	}
 
@@ -90,7 +90,7 @@ export class Space<Type> {
 	 * @returns
 	 * @memberof Space
 	 */
-	public getState() {
+	public getState(): Type {
 		return this.state;
 	}
 
@@ -100,7 +100,7 @@ export class Space<Type> {
 	 * @returns State
 	 * @memberof Space
 	 */
-	public setState(state: Type) {
+	public setState(state: Type): Type {
 		this.state = state;
 		return state;
 	}
@@ -122,7 +122,7 @@ export class Space<Type> {
 	 * @param {Array<Client>} [exclude] - Array of clients to exclude in broadcasting message
 	 * @memberof Space
 	 */
-	public broadcast(message: any, exclude?: Array<Client>): void {
+	public broadcast(message: Record<string, unknown>, exclude?: Array<Client>): void {
 		let clientsToMessage = this.clients;
 		if (exclude) {
 			clientsToMessage = this.clients.filter(client => !exclude.includes(client));

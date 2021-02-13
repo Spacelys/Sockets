@@ -1,4 +1,3 @@
-import { IncomingMessage } from 'http';
 import {v4 as uuid } from 'uuid';
 import * as WebSocket from 'ws';
 import { Space } from './space';
@@ -24,7 +23,7 @@ export const listen = <T>(port: number, initState?: () => T, _config?: Config): 
 	}
 
 	const mainSpace = new Space<T>(iState, { name: 'main', clients: [] });
-	wss.on('connection', (ws: WebSocket, req: IncomingMessage) => {
+	wss.on('connection', (ws: WebSocket) => {
 		const uid = uuid();
 		const from: Client = createClient(uid, ws);
 		mainSpace.addClient(from);

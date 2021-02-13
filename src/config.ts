@@ -1,7 +1,7 @@
 export interface Config {
 	calculatePing?: boolean;
 	autoDisconnect?: boolean;
-	messageDecoder?: (message: string) => any;
+	messageDecoder?: (message: string) => Record<string, unknown>;
 	messageEncoder?: (encodedMessage: any) => string;
 	options?: {
 		pingInterval?: number;
