@@ -122,7 +122,7 @@ export class Space<Type> {
 	 * @param {Array<Client>} [exclude] - Array of clients to exclude in broadcasting message
 	 * @memberof Space
 	 */
-	public broadcast(message: Record<string, unknown>, exclude?: Array<Client>): void {
+	public broadcast(message: Record<string, unknown> | string, exclude?: Array<Client>): void {
 		let clientsToMessage = this.clients;
 		if (exclude) {
 			clientsToMessage = this.clients.filter(client => !exclude.includes(client));
