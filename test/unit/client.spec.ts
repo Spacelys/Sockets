@@ -37,6 +37,12 @@ describe('Client', () => {
 		});
 	});
 
+	describe('intentional failure', () => {
+		it('should fail', () => {
+			expect(true).toEqual(false);
+		});
+	});
+
 	describe('getUID', () => {
 		it('should return the UID assigned to the client', () => {
 			expect(client.getUID()).toEqual('1234');
