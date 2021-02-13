@@ -1,17 +1,17 @@
+import * as WebSocket from 'ws';
 import {Space} from './space';
-import * as WebSocket from "ws";
 
 export class Client {
+	public meta: {
+		ping: number;
+		lastPingTimeStamp: number;
+		disconnectTimer: NodeJS.Timeout;
+	};
 	private uid: string;
 	private ws: WebSocket;
-	meta: {
-		ping: number,
-		lastPingTimeStamp: number,
-		disconnectTimer: NodeJS.Timeout
-	};
-	private spaces: Array<Space<any>>
+	private spaces: Array<Space<any>>;
 
-	constructor(uid: string, ws: WebSocket) {
+	public constructor(uid: string, ws: WebSocket) {
 		this.uid = uid;
 		this.ws = ws;
 		this.spaces = [];
@@ -20,10 +20,11 @@ export class Client {
 
 	/**
 	 * Send packet of data to the client
+	 *
 	 * @param {string} encodedPacket
 	 * @memberof Client
 	 */
-	public reply(encodedPacket: string) {
+	public reply(encodedPacket: string): void {
 		this.ws.send(encodedPacket);
 	}
 
@@ -34,12 +35,13 @@ export class Client {
 	 * @param {Space<Type>} space
 	 * @memberof Client
 	 */
-	addToSpace<Type>(space: Space<Type>) {
+	public addToSpace<Type>(space: Space<Type>): void {
 		this.spaces.push(space);
 	}
 
 	/**
 	 * Get array of all spaces that the client is connected to
+	 *
 	 * @returns {Array<Space<any>>}
 	 * @memberof Client
 	 */
@@ -49,6 +51,7 @@ export class Client {
 
 	/**
 	 * Get the UID assigned to the user when they connected to our server
+	 *
 	 * @returns {string}
 	 * @memberof Client
 	 */
@@ -57,13 +60,15 @@ export class Client {
 	}
 
 	/**
-	 * disconnect the client from all their associated spaces, and then terminate the websocket connection between the server.
+	 * disconnect the client from all their associated spaces, and then
+	 * terminate the websocket connection between the server.
+	 *
 	 * @memberof Client
 	 */
 	public disconnect(): void {
 		this.spaces.forEach((space) => {
 			space.removeClient(this);
-		})
+		});
 		this.ws.terminate();
 	}
 }

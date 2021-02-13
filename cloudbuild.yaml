@@ -1,0 +1,13 @@
+steps:
+# Install
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['install']
+# Test
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'test']
+# coverage
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'coverage']
+# Linting
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'lint']
