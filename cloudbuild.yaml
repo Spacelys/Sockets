@@ -14,4 +14,4 @@ steps:
 artifacts:
   objects:
     location: 'gs://spacelys/sockets/'
-    paths: ['coverage']
+    paths: ['/coverage']
