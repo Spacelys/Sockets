@@ -13,5 +13,5 @@ steps:
   args: ['run', 'lint']
 artifacts:
   objects:
-    location: 'gs://spacelys/sockets'
-    paths: ['/coverage']
+    location: 'gs://spacelys/sockets/'
+    paths: ['package.json']
