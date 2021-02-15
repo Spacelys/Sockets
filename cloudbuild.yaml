@@ -14,6 +14,9 @@ steps:
 # Build Step
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'build']
+# Build Step
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args: ['gsutil', 'cp', '-r', 'dist', 'gs://spacelys/sockets/outputs/$COMMIT_SHA/dist']
 artifacts:
   objects:
     location: 'gs://spacelys/sockets/outputs/$COMMIT_SHA/'
