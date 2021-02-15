@@ -15,6 +15,6 @@ steps:
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'build']
 artifacts:
-  coverage:
+  objects:
     location: 'gs://spacelys/sockets/outputs/$COMMIT_SHA/'
-    paths: ['coverage/**.*']
+    paths: ['coverage/**.*', 'dist/**']
