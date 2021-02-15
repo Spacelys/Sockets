@@ -11,7 +11,10 @@ steps:
 # Lint Check
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'lint']
+# Debug
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'debug']
 artifacts:
   objects:
     location: 'gs://spacelys/sockets/'
-    paths: ['/coverage/**.*']
+    paths: ['coverage/**.*']

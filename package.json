@@ -12,6 +12,7 @@
   "port": 4321,
   "scripts": {
 	"test": "jest",
+	"debug": "ls",
     "coverage": "npm run test -- --coverage --coverageReporters=\"json-summary\"",
     "build": "tsc",
 	"artifacts": "ts-node ./artifacts.ts",
