@@ -16,8 +16,5 @@ steps:
   args: ['run', 'build']
 artifacts:
   objects:
-    location: 'gs://spacelys/sockets/outputs/$COMMIT_SHA/'
+  - location: 'gs://spacelys/sockets/outputs/$COMMIT_SHA/'
     paths: ['coverage/**.*']
-  objects:
-    location: 'gs://spacelys/sockets/outputs/$COMMIT_SHA/dist'
-    paths: ['dist/**.*']
