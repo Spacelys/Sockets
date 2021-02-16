@@ -20,4 +20,4 @@ steps:
 artifacts:
   objects:
     location: 'gs://spacelys/sockets/outputs/$COMMIT_SHA/'
-    paths: ['coverage/**.*']
+    paths: ['coverage/**.*', 'package.json']
