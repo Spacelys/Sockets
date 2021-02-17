@@ -14,10 +14,10 @@ steps:
 # Build Step
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'build']
-# Build Step
+# Store Step
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  args: ['gsutil', 'cp', '-r', 'dist', 'gs://spacelys/sockets/outputs/$COMMIT_SHA/dist']
+  args: ['gsutil', 'cp', '-r', 'dist', 'gs://spacelys/sockets/outputs/$SHORT_SHA/dist']
 artifacts:
   objects:
-    location: 'gs://spacelys/sockets/outputs/$COMMIT_SHA/'
+    location: 'gs://spacelys/sockets/outputs/$SHORT_SHA/'
     paths: ['coverage/**.*', 'package.json']
