@@ -179,7 +179,7 @@ gameSpace.onLeave((from: Spacely.Client) => {
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
+Please make sure the changes in the Pull Request pass the cloud build checks setup.  Merges to master will automatically publish NPM package.  Ensure that the version number is correct before merging your PR into master as that is the version number the package will be published with.
 
 ## License
 
