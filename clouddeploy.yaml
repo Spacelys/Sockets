@@ -16,12 +16,9 @@ steps:
 #   secretEnv: ['NPM_TOKEN']
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: /bin/bash
-  args: ['-c', 'echo "//registry.npmjs.org/:_authToken=1234" > .npmrc']
-# did output correctly?
-- name: 'bash'
-  args: ['cat', ".npmrc"]
+  args: ['-c', 'echo "//registry.npmjs.org/:_authToken=$${NPM_TOKEN}" > .npmrc']
   secretEnv: ['NPM_TOKEN']
-# Publsih Step
+# Publish Step
 - name: 'gcr.io/cloud-builders/npm'
   args: ['publish']
   secretEnv: ['NPM_TOKEN']
