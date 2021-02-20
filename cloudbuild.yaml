@@ -11,12 +11,6 @@ steps:
 # Lint Check
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'lint']
-# Build Step
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['run', 'build']
-# Store Step
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  args: ['gsutil', 'cp', '-r', 'dist', 'gs://spacelys/sockets/outputs/$SHORT_SHA/dist']
 artifacts:
   objects:
     location: 'gs://spacelys/sockets/outputs/$SHORT_SHA/'
