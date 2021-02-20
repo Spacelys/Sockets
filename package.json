@@ -12,10 +12,8 @@
   "port": 4321,
   "scripts": {
     "test": "jest",
-	"debug": "ts-node ./debug.ts",
     "coverage": "npm run test -- --coverage --coverageReporters=\"json-summary\"",
     "build": "tsc",
-    "artifacts": "ts-node ./artifacts.ts",
     "dev": "nodemon",
     "integration": "ts-node ./test/integration/disconnect.ts",
     "examples": "ts-node ./examples/simple/index.ts",
