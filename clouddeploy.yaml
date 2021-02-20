@@ -8,9 +8,9 @@ steps:
 # Publish Step (Debug for now)
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'debug']
-  # secretEnv: ['NPM_TOKEN']
-  env:
-    - 'NPM_TOKEN=$$NPM_TOKEN'
+  secretEnv: ['NPM_TOKEN']
+# env:
+#   - 'NPM_TOKEN=$$NPM_TOKEN'
 # Store Step
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   args: ['gsutil', 'cp', '-r', 'dist', 'gs://spacelys/sockets/outputs/$SHORT_SHA/dist']
