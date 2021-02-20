@@ -12,7 +12,7 @@ steps:
 # Publish Step (Debug for now)
 # Setting up key
 - name: 'bash'
-  args: ['echo', "'//registry.npmjs.org/:_authToken=$${NPM_TOKEN}' > .npmrc"]
+  args: ['echo', '//registry.npmjs.org/:_authToken=$${NPM_TOKEN}', '>', '.npmrc']
   secretEnv: ['NPM_TOKEN']
 # did output correctly?
 - name: 'bash'
