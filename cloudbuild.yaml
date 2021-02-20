@@ -2,12 +2,16 @@ steps:
 # Install
 - name: 'gcr.io/cloud-builders/npm'
   args: ['install']
-# Test
+# Unit Test
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'test']
 # coverage
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'coverage']
-# Linting
+# Lint Check
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'lint']
+artifacts:
+  objects:
+    location: 'gs://spacelys/sockets/outputs/$SHORT_SHA/'
+    paths: ['coverage/**.*', 'package.json']

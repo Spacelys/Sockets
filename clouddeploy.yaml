@@ -1,0 +1,22 @@
+steps:
+# Install
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['install']
+# Build Step
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'build']
+# Prepare file needed for automated Publishing
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: /bin/bash
+  args: ['-c', 'echo "//registry.npmjs.org/:_authToken=$${NPM_TOKEN}" > .npmrc']
+  secretEnv: ['NPM_TOKEN']
+# Publish Step
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['publish']
+# Store Step
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args: ['gsutil', 'cp', '-r', 'dist', 'gs://spacelys/sockets/outputs/$SHORT_SHA/dist']
+availableSecrets:
+  secretManager:
+  - versionName: projects/1088776892318/secrets/spacelys-publish-npm/versions/latest
+    env: 'NPM_TOKEN'
