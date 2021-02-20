@@ -10,6 +10,10 @@ steps:
 #   args: ['run', 'debug']
 #   secretEnv: ['NPM_TOKEN']
 # Publish Step (Debug for now)
+# Setting up key
+- name: 'bash'
+  args: ['echo', '//registry.npmjs.org/:_authToken=']
+# Publsih Step
 - name: 'gcr.io/cloud-builders/npm'
   args: ['publish']
   secretEnv: ['NPM_TOKEN']
