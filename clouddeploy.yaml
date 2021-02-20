@@ -5,13 +5,10 @@ steps:
 # Build Step
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'build']
-# Debug Step
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['run', 'build']
-# Publish Step
+# Publish Step (Debug for now)
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'debug']
-  secretEnv: ['NPM_TOKEN']
+  # secretEnv: ['NPM_TOKEN']
   env:
     - 'NPM_TOKEN=$$NPM_TOKEN'
 # Store Step
