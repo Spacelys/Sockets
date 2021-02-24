@@ -14,7 +14,6 @@
     "test": "jest",
     "coverage": "npm run test -- --coverage --coverageReporters=\"json-summary\"",
     "build": "tsc",
-    "dev": "nodemon",
     "integration": "ts-node ./test/integration/disconnect.ts",
     "examples": "ts-node ./examples/simple/index.ts",
     "lint": "eslint -c .eslintrc.js --ext .ts './src/**/*.ts'"
@@ -40,7 +39,6 @@
     "fork-ts-checker-webpack-plugin": "3.1.1",
     "html-webpack-plugin": "3.2.0",
     "jest": "24.9.0",
-    "nodemon": "2.0.2",
     "react-docgen-typescript-loader": "3.6.0",
     "ts-jest": "24.3.0",
     "ts-loader": "6.2.1",

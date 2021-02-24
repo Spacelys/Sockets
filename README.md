@@ -1,5 +1,5 @@
 # SpacelySocket
-
+![Version](https://storage.googleapis.com/spacelys/sockets/outputs/latest/badges/version.svg) ![Coverage](https://storage.googleapis.com/spacelys/sockets/outputs/latest/badges/coverage.svg)
 ## Basic Overview
 
 Manage your clients and websocket server with the use of Spaces.  These Spaces make it easy to organize clients and events in a compartmentalized manner.
@@ -158,14 +158,16 @@ gameSpace.onMessage((from: Spacely.Client, message: any) => {
 ```typescript
 mainSpace.onMessage((from: Spacely.Client, message: any) => {
     if (message === "exit-server") {
-        // Removes from ALL spaces and terminates their websocket connection (onLeave gets called for all the Spaces they were in)
+        // Removes from ALL spaces and terminates their websocket connection
+        //(onLeave gets called for all the Spaces they were in)
         from.disconnect();
     }
 });
 
 gameSpace.onMessage((from: Spacely.Client, message: any) => {
     if (message === "leave-game") {
-        // Removes client from gameSpace, their websocket connection is still active on the server (onLeave gets called for gameSpace)
+        // Removes client from gameSpace, their websocket connection is still 
+        // active on the server (onLeave gets called for gameSpace)
         gameSpace.removeClient(from);
     }
 });
