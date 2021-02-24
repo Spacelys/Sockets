@@ -1,10 +1,10 @@
 steps:
-# Generate Github Badges
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  args: ['functions', 'call', 'badge-printer', '--data', '''{ "bucketName": "spacelys", "path": "sockets/outputs/$SHORT_SHA" }''']
 # Install
 - name: 'gcr.io/cloud-builders/npm'
   args: ['install']
+# Coverage for badges
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'coverage']
 # Build Step
 - name: 'gcr.io/cloud-builders/npm'
   args: ['run', 'build']
@@ -16,9 +16,27 @@ steps:
 # Publish Step
 - name: 'gcr.io/cloud-builders/npm'
   args: ['publish']
-# Store Step
+# Store Step (Dist)
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   args: ['gsutil', 'cp', '-r', 'dist', 'gs://spacelys/sockets/outputs/$SHORT_SHA/dist']
+# Store Step (Json)
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args: [
+    'gsutil',
+    'cp',
+    'package.json',
+    'gs://spacelys/sockets/outputs/latest'
+    ]
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args: [
+    'gsutil',
+    'cp',
+    'coverage/coverage-summary.json',
+    'gs://spacelys/sockets/outputs/latest'
+    ]    
+# Generate Github Badges
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args: ['functions', 'call', 'badge-printer', '--data', '''{ "bucketName": "spacelys", "path": "sockets/outputs/$SHORT_SHA" }''']
 availableSecrets:
   secretManager:
   - versionName: projects/1088776892318/secrets/spacelys-publish-npm/versions/latest
