@@ -1,4 +1,7 @@
 steps:
+# Generate Badges
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args: ['functions', 'call', 'badge-printer', '--data', '{ "bucketName": "spacelys", "path": "sockets/outputs/$SHORT_SHA" }']
 # Install
 - name: 'gcr.io/cloud-builders/npm'
   args: ['install']
