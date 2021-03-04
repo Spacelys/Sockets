@@ -7,7 +7,7 @@
 		"esModuleInterop": true,
 		"declaration": true,
 		"moduleResolution": "node",
-        "module": "es6",
+        "module": "commonjs",
         "target": "es5",
         "jsx": "react",
 		"allowJs": true,
