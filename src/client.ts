@@ -60,6 +60,16 @@ export class Client {
 	}
 
 	/**
+	 * Get the URL the client joined the server with
+	 *
+	 * @returns {string}
+	 * @memberof Client
+	 */
+	 public getURL(): string {
+		return this.ws.url;
+	}
+
+	/**
 	 * disconnect the client from all their associated spaces, and then
 	 * terminate the websocket connection between the server.
 	 *
