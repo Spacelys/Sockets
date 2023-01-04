@@ -2,7 +2,7 @@
   "name": "@spacelys/sockets",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "repository": {
     "type": "git",
@@ -16,6 +16,7 @@
     "build": "tsc",
     "integration": "ts-node ./test/integration/disconnect.ts",
     "examples": "ts-node ./examples/simple/index.ts",
+    "examples:wsclient": "ts-node ./examples/wsclient/index.ts",
     "lint": "eslint -c .eslintrc.js --ext .ts './src/**/*.ts'"
   },
   "author": "",
