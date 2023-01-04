@@ -44,3 +44,4 @@ export const listen = <T>(port: number, initState?: () => T, _config?: Config): 
 
 export { Config } from './config';
 export { Client } from './client';
+export { WsClient } from './wsclient';
