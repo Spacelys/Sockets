@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import WebSocket from 'isomorphic-ws';
 
 /**
  * This client setups up some of the fancier functionality for you
