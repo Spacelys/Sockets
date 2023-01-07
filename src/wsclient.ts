@@ -38,14 +38,14 @@ export class WsClient {
 				reject('Unable to connect to ' + address + ': Timeout 5s');
 			}, 5000);
 
-			this.ws.on('open', () => {
+			this.ws.onopen = () => {
 				clearTimeout(timeoutInterval);
 				resolve('connected to ' + address);
-			});
+			};
 
-			this.ws.on('message', (data: WebSocket.Data) => {
+			this.ws.onmessage = (data: WebSocket.MessageEvent) => {
 				try {
-					const packet: Record<string, any> = JSON.parse(data as string) as Record<string, any>;
+					const packet: Record<string, any> = JSON.parse(data.data.toString()) as Record<string, any>;
 					if (packet.type === 'PING') {
 						this.send({type: 'PONG'});
 					}
@@ -56,7 +56,7 @@ export class WsClient {
 					// @TODO should use a logger
 					console.log('Spacelys/Socket: received malformed data');
 				}
-			});
+			};
 		});
 	}
 }
