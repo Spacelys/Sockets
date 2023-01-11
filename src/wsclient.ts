@@ -6,6 +6,7 @@ import WebSocket from 'isomorphic-ws';
 export class WsClient {
 	protected ws: WebSocket;
 	protected messageListener: (message: any) => void;
+	protected onConnectListener: () => void;
 
 	public constructor() {
 		this.ws = undefined;
@@ -13,7 +14,7 @@ export class WsClient {
 	}
 
 	public isConnected(): boolean {
-		return this.ws !== undefined;
+		return this.ws && this.ws.readyState !== WebSocket.CLOSED;
 	}
 
 	public send(data: any): void {
@@ -30,6 +31,9 @@ export class WsClient {
 	public onMessage(cb: (message: any) => void): void {
 		this.messageListener = cb;
 	}
+	public onConnect(cb: () => void): void {
+		this.onConnectListener = cb;
+	}
 
 	public async connect(address: string): Promise<string> {
 		this.ws = new WebSocket(address);
@@ -40,6 +44,9 @@ export class WsClient {
 
 			this.ws.onopen = () => {
 				clearTimeout(timeoutInterval);
+				if (this.onConnectListener) {
+					this.onConnectListener();
+				}
 				resolve('connected to ' + address);
 			};
 
