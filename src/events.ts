@@ -1,9 +1,16 @@
 import { Client } from './client';
 import { Config } from './config';
 
+const getAndSetLatestPing = (to: Client) => {
+	const timeNow = new Date().getTime();
+	const ping = timeNow - to.meta.lastPingTimeStamp;
+	to.meta.ping = ping;
+	return ping;
+};
+
 export const sendPingRequest = (to: Client): void => {
 	to.meta.lastPingTimeStamp = new Date().getTime();
-	to.reply(JSON.stringify({ type: 'PING', payload: { yourId: to.getUID() }}));
+	to.reply(JSON.stringify({ type: 'PING', payload: to.meta.ping}));
 };
 
 export const startDisconnectTimer = (forClient: Client, disconnectTime: number): void => {
@@ -15,13 +22,6 @@ export const startDisconnectTimer = (forClient: Client, disconnectTime: number):
 	forClient.meta.disconnectTimer = setTimeout(() => {
 		forClient.disconnect();
 	}, disconnectTime);
-};
-
-const respondWithLatestPing = (to: Client) => {
-	const timeNow = new Date().getTime();
-	const ping = timeNow - to.meta.lastPingTimeStamp;
-	to.meta.ping = ping;
-	to.reply(JSON.stringify({ type: 'YOURPING', payload: ping }));
 };
 
 type MessageProcessor = (message: Record<string, unknown>) => void;
@@ -55,8 +55,7 @@ export const handleBuiltInEvents = (config: Config, client: Client): MessageProc
 		clearDisconnectTimer();
 		if (config.calculatePing) {
 			if (message.type === 'PONG') {
-				respondWithLatestPing(client);
-				// setTimeout(() => sendPingRequest(client), config.options.pingInterval);
+				getAndSetLatestPing(client);
 				livelinessCheck();
 			}
 		}

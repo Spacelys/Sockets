@@ -42,14 +42,18 @@ server.onMessage(
 
 // client side
 const client = new spacelys.WsClient();
+client.onConnect(() => {
+	console.log('I logged on!');
+})
 client.onMessage((message: any) => {
-	// console.log("[Client]", message);
-
-	if (message.type === "YOURPING") {
+	if (message.type === "PING") {
 		console.log('[Client] my ping is', message.payload);
 	}
 })
 client.connect('ws://localhost:9091');
+setInterval(() => {
+	console.log('is connected', client.isConnected());
+}, 1000);
 setTimeout(() => {
 	client.disconnect();
 }, 5000);
