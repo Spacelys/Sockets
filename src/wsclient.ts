@@ -35,7 +35,7 @@ export class WsClient {
 		this.onConnectListener = cb;
 	}
 
-	public async connect(address: string): Promise<string> {
+	public async connect(address: string): Promise<WsClient> {
 		this.ws = new WebSocket(address);
 		return new Promise((resolve, reject) => {
 			const timeoutInterval = setTimeout(() => {
@@ -47,7 +47,7 @@ export class WsClient {
 				if (this.onConnectListener) {
 					this.onConnectListener();
 				}
-				resolve('connected to ' + address);
+				resolve(this);
 			};
 
 			this.ws.onmessage = (data: WebSocket.MessageEvent) => {
