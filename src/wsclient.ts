@@ -1,7 +1,7 @@
 import WebSocket from 'isomorphic-ws';
 
 /**
- * This client setups up some of the fancier functionality for you
+ * This client setups some of the fancier functionality for you such as pinging and reconnects
  */
 export class WsClient {
 	protected ws: WebSocket;
