@@ -3,11 +3,13 @@ import {Space} from '../../src/space';
 import * as WebSocket from "ws";
 
 jest.mock('../../src/client', () => ({
-	Client: jest.fn().mockImplementation(() => ({
+	Client: (uid: string) => ({
+		getUID: jest.fn().mockName('mockGetUID').mockReturnValue(uid),
 		reply: jest.fn().mockName('mockReply'),
 		addToSpace: jest.fn().mockName('mockAddToSpace')
-	}))
+	})
 }));
+
 
 describe('Space', () => {
 	let client1: Client, client2: Client, client3: Client, space: Space<any>;
@@ -67,6 +69,13 @@ describe('Space', () => {
 		it('addClient should add client to space and call join handler', () => {
 			space.addClient(newClient);
 			expect(joinHandler).toHaveBeenCalled();
+			expect(space.getClients().includes(newClient)).toEqual(true);
+		});
+
+		it('addClient should handle elegantly adding the same client twice', () => {
+			space.addClient(newClient);
+			space.addClient(newClient);
+			expect(joinHandler).toHaveBeenCalledTimes(1);
 			expect(space.getClients().includes(newClient)).toEqual(true);
 		});
 

@@ -13,7 +13,7 @@ export class Space<Type> {
 		clients: Array<Client>;
 		name: string;
 	}) {
-		const {clients, name} = args;
+		const { clients, name } = args;
 		this.state = state;
 		this.name = name;
 		this.clients = clients;
@@ -32,11 +32,13 @@ export class Space<Type> {
 	}
 
 	public addClient(client: Client): void {
-		this.clients.push(client);
-		client.addToSpace(this);
+		if (!this.clients.some(c => c.getUID() === client.getUID())) {
+			this.clients.push(client);
+			client.addToSpace(this);
 
-		if (this.joinHandler) {
-			this.joinHandler(client);
+			if (this.joinHandler) {
+				this.joinHandler(client);
+			}
 		}
 	}
 
