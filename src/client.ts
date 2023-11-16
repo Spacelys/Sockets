@@ -40,6 +40,17 @@ export class Client {
 	}
 
 	/**
+	 * Remove a user from the space supplied
+	 *
+	 * @template Type
+	 * @param {Space<Type>} space
+	 * @memberof Client
+	 */
+	public removeSpace<Type>(space: Space<Type>): void {
+		this.spaces = this.spaces.filter(s => s.getName() !== space.getName());
+	}
+
+	/**
 	 * Get array of all spaces that the client is connected to
 	 *
 	 * @returns {Array<Space<any>>}

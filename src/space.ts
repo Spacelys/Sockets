@@ -42,12 +42,22 @@ export class Space<Type> {
 		}
 	}
 
+	/**
+	 * Disconnect all clients from the space (this doesnt really "close" anything)
+	 */
+	public close(): void {
+		this.clients.forEach(client => {
+			this.removeClient(client);
+		});
+	}
+
 	public removeClient(client: Client): void {
 		const i = this.clients.indexOf(client);
 		if (i !== -1) {
 			this.clients.splice(i, 1);
 			if (this.leaveHandler) {
 				this.leaveHandler(client);
+				client.removeSpace(this);
 			}
 		}
 	}
