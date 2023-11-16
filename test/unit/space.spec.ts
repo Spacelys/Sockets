@@ -6,6 +6,7 @@ jest.mock('../../src/client', () => ({
 	Client: (uid: string) => ({
 		getUID: jest.fn().mockName('mockGetUID').mockReturnValue(uid),
 		reply: jest.fn().mockName('mockReply'),
+		removeSpace: jest.fn().mockName('mockRemoveSpace'),
 		addToSpace: jest.fn().mockName('mockAddToSpace')
 	})
 }));
