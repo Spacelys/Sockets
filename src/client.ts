@@ -40,7 +40,7 @@ export class Client {
 	}
 
 	/**
-	 * Add user to the space supplied
+	 * Remove a space user to the space supplied
 	 *
 	 * @template Type
 	 * @param {Space<Type>} space
